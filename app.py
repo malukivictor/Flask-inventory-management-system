@@ -2,9 +2,10 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def home():
-    return "Welcome to the Flask API!"
+    return "<h3>Welcome to the Flask API!</h3>"
 
 
 if __name__ == "__main__":
