@@ -1,6 +1,7 @@
 inventory = [
     {
         "id": 1,
+        "status": 1,
         "barcode": "61600101",
         "price": 65.00,
         "stock": 120,
@@ -12,6 +13,7 @@ inventory = [
     },
     {
         "id": 2,
+        "status": 1,
         "barcode": "61600202",
         "price": 150.00,
         "stock": 80,
@@ -23,6 +25,7 @@ inventory = [
     },
     {
         "id": 3,
+        "status": 1,
         "barcode": "61600303",
         "price": 120.00,
         "stock": 60,
@@ -34,6 +37,7 @@ inventory = [
     },
     {
         "id": 4,
+        "status": 1,
         "barcode": "61600404",
         "price": 380.00,
         "stock": 35,
@@ -45,6 +49,7 @@ inventory = [
     },
     {
         "id": 5,
+        "status": 1,
         "barcode": "61600505",
         "price": 330.00,
         "stock": 45,

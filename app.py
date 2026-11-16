@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from data import inventory
+from openfoodfacts import OpenFoodFactsError, fetch_by_barcode, search_by_name
 
 app = Flask(__name__)
 
@@ -34,12 +35,8 @@ def get_item(item_id):
 @app.route("/inventory", methods=["POST"])
 def add_item():
     data = request.get_json(silent=True)
-    if not data or "product" not in data or "price" not in data:
+    if not isinstance(data, dict) or "price" not in data:
         return jsonify({"error": "Invalid input"}), 400
-
-    product = data["product"]
-    if not isinstance(product, dict) or not product.get("product_name"):
-        return jsonify({"error": "Product information is needed"}), 400
 
     price = data["price"]
     stock = data.get("stock", 0)
@@ -48,10 +45,28 @@ def add_item():
     if not isinstance(stock, int) or stock < 0:
         return jsonify({"error": "Stock must be a whole number, 0 or higher"}), 400
 
+    barcode = str(data.get("barcode", "")).strip()
+    product = data.get("product")
+
+    if barcode:
+        try:
+            found = fetch_by_barcode(barcode)
+        except OpenFoodFactsError as error:
+            return jsonify({"error": str(error)}), 502
+        if found:
+            product = {
+                "product_name": found["product_name"],
+                "brands": found["brands"],
+                "ingredients_text": found["ingredients_text"],
+            }
+
+    if not isinstance(product, dict) or not product.get("product_name"):
+        return jsonify({"error": "Product not found. Send a valid barcode or a product with a product_name"}), 400
+
     new_item = {
         "id": next_id(),
         "status": 1,
-        "barcode": data.get("barcode", ""),
+        "barcode": barcode,
         "price": price,
         "stock": stock,
         "product": {
@@ -105,6 +120,30 @@ def delete_item(item_id):
     inventory.remove(item)
     return jsonify({"message": "Item deleted"}), 200
 
+#searching prods
+@app.route("/search", methods=["GET"])
+def search_products():
+    barcode = request.args.get("barcode")
+    name = request.args.get("name")
+
+    if barcode:
+        try:
+            product = fetch_by_barcode(barcode)
+            if product:
+                return jsonify([product]), 200
+            else:
+                return jsonify({"error": "Product not found"}), 404
+        except OpenFoodFactsError as error:
+            return jsonify({"error": str(error)}), 502
+
+    if name:
+        try:
+            products = search_by_name(name)
+            return jsonify(products), 200
+        except OpenFoodFactsError as error:
+            return jsonify({"error": str(error)}), 502
+
+    return jsonify({"error": "Please provide either a barcode or a product name to search for"}), 400
 
 if __name__ == "__main__":
     app.run(debug=True)
