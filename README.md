@@ -78,6 +78,6 @@ details you sent are used instead.
 6. Find a product on OpenFoodFacts and add it to the inventory
 0. Quit
 
-To try the OpenFoodFacts lookup, add an item with the barcode `6111246721278` or .
+To try the OpenFoodFacts lookup, add an item with the barcode `6111246721278` .
 
 The CLI prints "Server unreachable." if the server is not running.
