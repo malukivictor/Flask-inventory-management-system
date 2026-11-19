@@ -61,7 +61,7 @@ def add_item():
             }
 
     if not isinstance(product, dict) or not product.get("product_name"):
-        return jsonify({"error": "Product not found. Send a valid barcode or a product with a product_name"}), 400
+        return jsonify({"error": "Product not found. Send a valid barcode or product name"}), 400
 
     new_item = {
         "id": next_id(),
@@ -143,7 +143,7 @@ def search_products():
         except OpenFoodFactsError as error:
             return jsonify({"error": str(error)}), 502
 
-    return jsonify({"error": "Please provide either a barcode or a product name to search for"}), 400
+    return jsonify({"error": "Please provide barcode or a product name to search"}), 400
 
 if __name__ == "__main__":
     app.run(debug=True)
