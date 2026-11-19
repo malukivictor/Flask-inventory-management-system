@@ -137,7 +137,7 @@ while True:
     elif choice == "6":
         find_on_api()
     elif choice == "0":
-        print("kwaheri")
+        print("Goodbye")
         break
     else:
         print("Invalid choice.")
