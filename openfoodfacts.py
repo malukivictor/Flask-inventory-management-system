@@ -2,7 +2,7 @@ import requests
 
 base_url = "https://world.openfoodfacts.org"
 HEADERS = {
-    "User-Agent": "DeathstarMoringa/1.0 (victor.jane@MoringaSchool.com)"}
+    "User-Agent": "DeathstarMoringa/1.0 (DarthVader)"}
 TIMEOUT = 10
 
 class OpenFoodFactsError(Exception):
@@ -62,5 +62,11 @@ def search_by_name(name, limit=5):
         for item in data.get("products", [])
     ]
 
+
+
 if __name__ == "__main__":
-    print(fetch_by_barcode("3017620422003"))
+    print(fetch_by_barcode("6111246721278")) 
+
+#OFG barcode for OG cheese 6111246721278
+#skimmed milk 6111032009665
+#perly 6111242100992
